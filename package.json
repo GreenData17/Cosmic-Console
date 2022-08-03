@@ -2,7 +2,7 @@
     "name": "com.greendata.cosmicconsole",
     "version": "1.2.3",
     "displayName": "Cosmic Console",
-    "description": "A drag and drop console made to make in-game commands easy to create.",
+    "description": "A drag and drop console. \nIt's made to make in-game commands easy to create and use.",
     "unity": "2021.3",
 
     "keywords": [
