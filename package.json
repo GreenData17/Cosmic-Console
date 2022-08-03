@@ -1,0 +1,17 @@
+{
+    "name": "com.greendata.cosmicconsole",
+    "version": "1.2.3",
+    "displayName": "Cosmic Console",
+    "description": "A drag and drop console made to make in-game commands easy to create.",
+    "unity": "2021.3",
+
+    "keywords": [
+        "console",
+        "debug",
+        "easy"
+    ],
+    "author": {
+        "name": "GreenData",
+        "url": "https://github.com/GreenData17/Cosmic-Console"
+    }
+}
