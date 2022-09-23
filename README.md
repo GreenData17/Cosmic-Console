@@ -1,2 +1,2 @@
 # Cosmic-Console
- A console for Unity, to debug games.
+ A in-game Console, for unity games.
