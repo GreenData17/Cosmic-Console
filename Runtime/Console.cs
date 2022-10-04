@@ -17,39 +17,40 @@ public class Console : MonoBehaviour
     [Space]
     public TMP_InputField consoleInput;
     [Header("Settings")]
+    public bool printWelcomeOnAwake = true;
     public bool onCloseRePositon = true;
-    private Vector3 originPos;
+    private Vector3 _originPos;
 
-    // private~
+    // private
     private bool isOpen;
-    private CanvasGroup m_group;
-    private List<GameObject> m_OutputObjectHistory = new List<GameObject>();
+    private CanvasGroup _group;
+    private List<GameObject> _OutputObjectHistory = new List<GameObject>();
     private List<Command> Commands = new List<Command>();
 
     private void Awake(){
         if(instance is null) instance = this; else Destroy(gameObject);
-        m_group = GetComponent<CanvasGroup>();
-        isOpen = m_group.interactable;
-        originPos = transform.position;
+        _group = GetComponent<CanvasGroup>();
+        isOpen = _group.interactable;
+        _originPos = transform.localPosition;
 
         AddCommand("help", "Shows the help list", Cmd_SendHelp);
         AddCommand("quit", "Quits the game.", Cmd_QuitGame);
         AddCommand("clear", "Clears the console.", Cmd_ClearHistory);
 
-        SendWelcome();
+        if(printWelcomeOnAwake) SendWelcome();
     }
 
     private void Start() => CloseConsole();
 
     private void Update()
     {
-        UpdateInput();
+        ResetInputField();
 
         if (Input.GetKey(KeyCode.F12) && !isOpen) OpenConsole();
         else if (Input.GetKey(KeyCode.F12) && isOpen) CloseConsole();
     }
 
-    private void UpdateInput()
+    private void ResetInputField()
     {
         if (!string.IsNullOrEmpty(consoleInput.text))
         {
@@ -70,18 +71,18 @@ public class Console : MonoBehaviour
 
         SendToConsole("- Thank you for using CosmicConsole! -", color);
 
-        #if UNITY_STANDALONE_WIN
+        #if UNITY_EDITOR
+        SendToConsole("CC should run perfectly fine in the Editor.", color);
+        #elif UNITY_STANDALONE_WIN
         SendToConsole("CC is fully supported on windows!", color);
         #elif UNITY_STANDALONE_OSX
-        SendToConsole("CC has not been tested on mac. use with care.", color);
+        SendToConsole("CC has not been tested on mac.", color);
         #elif UNITY_STANDALONE_LINUX
         SendToConsole("CC is partly supported on linux.", color);
         #elif UNITY_WEBGL
-        SendToConsole("CC can cause some problems on webGL. use with care.", color);
-        #elif UNITY_EDITOR
-        SendToConsole("CC should run perfectly fine in the Editor.", color);
+        SendToConsole("CC can cause some problems on webGL.", color);
         #else
-        SendToConsole("CC has not been tested on your device. use with care.", color);
+        SendToConsole("CC has not been tested on your device.", color);
         #endif
 
         SendToConsole("=================================", color);
@@ -95,7 +96,7 @@ public class Console : MonoBehaviour
         Application.logMessageReceived -= HandleLog;
 
 
-    // - Handle the vars recieved form unity console -
+    // - Handle the data recieved form unity console -
     private void HandleLog(string logString, string stackTrace, LogType type)
     {
         if (string.IsNullOrWhiteSpace(logString)) return;
@@ -148,16 +149,14 @@ public class Console : MonoBehaviour
             valid = true;
         }
 
-        // if it doesn't exists send error message.
+        // if command does not exists send error message.
         if (!valid)
         {
             SendToConsole($"There is no Command with the alias \"{alias}\".", "#DD0000");
         }
     }
 
-    // functions
-
-    // - displays the text in the console output -
+    // - displays text in console output -
     public static void SendToConsole(string text, string colorInHex = "#FFFFFF"){
         if(string.IsNullOrWhiteSpace(text)) return;
 
@@ -172,33 +171,33 @@ public class Console : MonoBehaviour
 
         // register item in history
         var consoleOutputScrollRect = instance.consoleOutputField.transform.parent.parent.gameObject.GetComponent<ScrollRect>();
-        instance.m_OutputObjectHistory.Add(TempOutput);
+        instance._OutputObjectHistory.Add(TempOutput);
         Canvas.ForceUpdateCanvases();
         consoleOutputScrollRect.verticalNormalizedPosition = 0;
 
-        // [future may include save in a log file]
+        // TODO: [future may include save in a log file]
     }
 
     public void CloseConsole()
     {
-        if(m_group.alpha == 0) return;
+        if(_group.alpha == 0) return;
 
-        m_group.alpha = 0;
-        m_group.interactable = false;
-        m_group.blocksRaycasts = false;
+        _group.alpha = 0;
+        _group.interactable = false;
+        _group.blocksRaycasts = false;
         StartCoroutine(OpenCloseDelay());
 
         if(onCloseRePositon)
-            transform.position = originPos;
+            transform.localPosition = _originPos;
     }
 
     public void OpenConsole()
     {
-        if(m_group.alpha == 1) return;
+        if(_group.alpha == 1) return;
 
-        m_group.alpha = 1;
-        m_group.interactable = true;
-        m_group.blocksRaycasts = true;
+        _group.alpha = 1;
+        _group.interactable = true;
+        _group.blocksRaycasts = true;
         StartCoroutine(OpenCloseDelay());
     }
 
@@ -208,7 +207,7 @@ public class Console : MonoBehaviour
     }
 
 
-    // handle new commands and some examble commands
+    // handle new commands and some example commands
 
     // - add command without description. (will be hidden in help list) -
     public static void AddCommand(string alias, Action<string[]> methodeToExecute)
@@ -226,6 +225,7 @@ public class Console : MonoBehaviour
         instance.Commands.Add(new Command() { alias = alias, description = description, method = methodeToExecute });
     }
 
+    // - removes a command -
     public static void RemoveCommand(string alias)
     {
         foreach(Command command in instance.Commands)
@@ -278,7 +278,7 @@ public class Console : MonoBehaviour
     // - clears the console -
     private void Cmd_ClearHistory(string[] args)
     {
-        foreach(GameObject consoleOutputitem in m_OutputObjectHistory)
+        foreach(GameObject consoleOutputitem in _OutputObjectHistory)
         {
             Destroy(consoleOutputitem);
         }
