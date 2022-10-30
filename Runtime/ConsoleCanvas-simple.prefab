@@ -671,7 +671,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!1 &8708837030282738221
 GameObject:
   m_ObjectHideFlags: 0
@@ -793,7 +793,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8708837029390127560}
   m_HandleRect: {fileID: 8708837029390127561}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -898,7 +898,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1521,7 +1521,12 @@ MonoBehaviour:
   consoleOutputField: {fileID: 8708837031014865582}
   consoleInput: {fileID: 8708837031064138931}
   printWelcomeOnAwake: 1
+  printUnityConsole: 1
   onCloseRePositon: 1
+  normalLog: {r: 1, g: 1, b: 1, a: 1}
+  warningLog: {r: 1, g: 1, b: 0, a: 1}
+  errorLog: {r: 1, g: 0.5, b: 0.5, a: 1}
+  infoLog: {r: 0, g: 1, b: 1, a: 1}
 --- !u!225 &8708837031018082840
 CanvasGroup:
   m_ObjectHideFlags: 0

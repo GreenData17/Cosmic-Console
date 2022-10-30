@@ -310,7 +310,13 @@ MonoBehaviour:
   consoleOutputItem: {fileID: 2886201146783979984}
   consoleOutputField: {fileID: 2886201145889628175}
   consoleInput: {fileID: 2886201145840324114}
+  printWelcomeOnAwake: 1
+  printUnityConsole: 1
   onCloseRePositon: 1
+  normalLog: {r: 1, g: 1, b: 1, a: 1}
+  warningLog: {r: 1, g: 1, b: 0, a: 1}
+  errorLog: {r: 1, g: 0.5, b: 0.5, a: 1}
+  infoLog: {r: 0, g: 1, b: 1, a: 1}
 --- !u!225 &2886201145903188153
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -644,7 +650,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1552,7 +1558,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!1 &2886201147906525679
 GameObject:
   m_ObjectHideFlags: 0
