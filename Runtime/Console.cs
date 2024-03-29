@@ -29,6 +29,7 @@ namespace cosmicconsole{
         public Color warningLog = new Color(1,1,0,1);
         public Color errorLog = new Color(1,0.5f,0.5f,1);
         public Color infoLog = new Color(0,1,1,1);
+        public EventHandler<ConsoleStateArgs> OnConsoleStateChange;
 
         // private
         private bool isOpen;
@@ -205,6 +206,7 @@ namespace cosmicconsole{
             _group.alpha = 0;
             _group.interactable = false;
             _group.blocksRaycasts = false;
+            ConsoleStateChanged(false);
             StartCoroutine(OpenCloseDelay());
 
             if(onCloseRePositon)
@@ -218,12 +220,22 @@ namespace cosmicconsole{
             _group.alpha = 1;
             _group.interactable = true;
             _group.blocksRaycasts = true;
+            ConsoleStateChanged(true);
             StartCoroutine(OpenCloseDelay());
         }
 
         IEnumerator OpenCloseDelay(){
             yield return new WaitForSeconds(1f);
             isOpen = !isOpen;
+        }
+
+        void ConsoleStateChanged(bool isOpen){
+            EventHandler<ConsoleStateArgs> handler = OnConsoleStateChange;
+            handler?.Invoke(this, new ConsoleStateArgs {open = isOpen});
+        }
+
+        public class ConsoleStateArgs : EventArgs{
+            public bool open { get; set; }
         }
 
 
